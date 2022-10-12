@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ data.category.title }}{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style/ad.css' %}">
+    <h2> Объявление: {{ data.ad.Title }} </h2>
+    <div class="ct">
+        <p><b>Описание:</b> {{ data.ad.Description }}</p>
+        <p><strong>Статус:</strong> {{ data.ad.Status }}</p>
+        {% include 'flat.html' with element=data.flat %}
+    </div>
+{% endblock %}

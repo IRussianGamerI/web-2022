@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Рынок недвижимости{% endblock %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style/index.css' %}">
+    <h1>Доска объявлений о продаже квартир</h1>
+    <h3><a href="admin/"> Панель администратора </a></h3>
+    <ol class="rounded">
+        {% for ad in data.ads %}
+            {% include 'ad_preview.html' with element=ad %}
+        {% empty %}
+            <li>Объявлений нет</li>
+        {% endfor %}
+    </ol>
+{% endblock %}

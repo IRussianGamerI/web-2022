@@ -1,0 +1,16 @@
+h2 {
+    text-align: center;
+}
+body{
+    background-color: bisque;
+}
+.ct img {
+    position: absolute;
+    top: 50px;
+    left: 720px;
+}
+
+.ct p {
+    width: 700px;
+    word-wrap: break-word;
+}
