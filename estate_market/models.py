@@ -20,20 +20,10 @@ class Flat(models.Model):
     Area = models.FloatField(null=False)
     Address = models.CharField(max_length=150, blank=False, null=False)
     Floor = models.IntegerField(null=False)
-    Type = models.ForeignKey(Type, models.DO_NOTHING, db_column='TypeID')
+    TypeID = models.ForeignKey(Type, models.DO_NOTHING, db_column='TypeID')
     Balcony = models.BooleanField(null=False)
     YearBuilt = models.IntegerField(null=True)
     BuildTech = models.CharField(max_length=30, blank=True, null=True)
-
-
-class Ad(models.Model):
-    AdID = models.AutoField(primary_key=True)
-    Title = models.CharField(max_length=120, blank=False, null=False)
-    Description = models.CharField(max_length=500, blank=True, null=True)
-    Status = models.CharField(max_length=30, blank=True, null=False)
-    CreationDate = models.DateTimeField(blank=True, null=False)
-    SellerID = models.ForeignKey(Seller, models.DO_NOTHING, db_column='SellerID')
-    FlatID = models.ForeignKey(Flat, models.DO_NOTHING, db_column='FlatID')
 
 
 class Customer(models.Model):
@@ -43,10 +33,14 @@ class Customer(models.Model):
     LastName = models.CharField(max_length=30, blank=True, null=False)
 
 
-class Order(models.Model):
-    OrderID = models.AutoField(primary_key=True)
-    CustomerID = models.ForeignKey(Customer, models.DO_NOTHING, db_column='CustomerID')
-    AdID = models.ForeignKey(Ad, models.DO_NOTHING, db_column='AdID')
+class Ad(models.Model):
+    AdID = models.AutoField(primary_key=True)
+    Price = models.IntegerField(blank=False, null=False)
+    CustomerID = models.ForeignKey(Customer, models.DO_NOTHING, db_column='CustomerID', blank=True, null=True)
+    Title = models.CharField(max_length=120, blank=False, null=False)
+    Description = models.CharField(max_length=500, blank=True, null=True)
     Status = models.CharField(max_length=30, blank=True, null=False)
-    OrderStartDate = models.DateField(blank=True, null=False)
-    OrderEndDate = models.DateField(blank=True, null=False)
+    CreationDate = models.DateTimeField(blank=True, null=False)
+    SaleDate = models.DateTimeField(blank=True, null=True)
+    SellerID = models.ForeignKey(Seller, models.DO_NOTHING, db_column='SellerID', blank=False, null=False)
+    FlatID = models.ForeignKey(Flat, models.DO_NOTHING, db_column='FlatID', blank=False, null=False)
