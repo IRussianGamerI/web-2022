@@ -5,10 +5,6 @@ import {useEffect, useState} from "react";
 
 export const HomePage = () => {
     const [display, setDisplay] = useState(false)
-    const [, setFlat] = useState(flats[0])
-    useEffect(() => {
-        setFlat(flats[Math.floor(Math.random() * flats.length)])
-    }, [display])
     return <div>
         <div>
             <p>Добро пожаловать в Estate Market!</p>
