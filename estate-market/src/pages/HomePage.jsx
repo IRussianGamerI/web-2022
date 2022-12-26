@@ -56,7 +56,7 @@ export const HomePage = () => {
                         className='py-1 px-3 w-80 rounded-lg bg-gray-200 outline-none placeholder-gray-700'
                     />
                 </div>
-                <button onClick={() => setValue({q, min_cost: minPrice, max_cost: maxPrice})}>Искать</button>
+                <button onClick={() => setValue({q, min_price: minPrice, max_price: maxPrice})}>Искать</button>
             </div>
 
             {ads &&
