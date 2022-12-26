@@ -8,8 +8,24 @@ from estate_market.serializers import *
 
 
 class AdViewSet(viewsets.ModelViewSet):
-    queryset = Ad.objects.all()
     serializer_class = AdSerializer
+    def get_queryset(self):
+        queryset = Ad.objects.all()
+        if self.request.method == "GET":
+            params = self.request.query_params.dict()
+            if 'q' in params.keys() and params['q'] != '':
+                queryset = queryset.filter(Title__icontains=params['q'])
+            if 'min_price' in params.keys() and params['min_price'] != '':
+                try:
+                    queryset = queryset.filter(Price__gte=int(params['min_price']))
+                except:
+                    pass
+            if 'max_price' in params.keys() and params['max_price'] != '':
+                try:
+                    queryset = queryset.filter(Price__lte=int(params['max_price']))
+                except:
+                    pass
+        return queryset
 
 
 class FlatViewSet(viewsets.ModelViewSet):
@@ -30,6 +46,16 @@ class SellerViewSet(viewsets.ModelViewSet):
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+
+
+class BasketViewSet(viewsets.ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer
+
+
+class ExpandedBasketViewSet(viewsets.ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = ExpandedBasketSerializer
 
 
 def get_all_ads(request):

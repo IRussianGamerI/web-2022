@@ -1,4 +1,4 @@
-from estate_market.models import Customer, Seller, Ad, Flat, Type
+from estate_market.models import Customer, Seller, Ad, Flat, Type, Basket
 from rest_framework import serializers
 
 
@@ -40,3 +40,16 @@ class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
         fields = ['TypeID', 'Name', 'NumBedrooms']
+
+
+class BasketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Basket
+        fields = ['id', 'CustomerID', 'AdID', 'Status']
+
+
+class ExpandedBasketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Basket
+        fields = ['id', 'CustomerID', 'AdID', 'Status']
+        depth = 2
