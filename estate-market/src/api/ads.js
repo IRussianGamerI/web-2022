@@ -1,34 +1,34 @@
-import {axios} from "axios"
+import {axiosInstance} from "./axios_instance";
 
-const url = "http://127.0.0.1:8000"
+const url = "Ads";
 
 export const getAds = () =>
-    axios
-        .get(`${url}/Ads/`)
+    axiosInstance
+        .get(`${url}/`)
         .then((res) => res.data)
         .catch((err) => {
             throw JSON.stringify(err.response?.data);
         });
 
 export const getAdById = (id) =>
-    axios
-        .get(`${url}/Ads/${id}`)
+    axiosInstance
+        .get(`${url}/${id}`)
         .then((res) => res.data)
         .catch((err) => {
             throw JSON.stringify(err.response?.data);
         });
 
 export const addAd = (ad) =>
-    axios
-        .post(`${url}/Ads/`, ad)
+    axiosInstance
+        .post(`${url}/`, ad)
         .then((res) => res.data)
         .catch((err) => {
             throw JSON.stringify(err.response?.data);
         });
 
 export const deleteAdById = (id) =>
-    axios
-        .delete(`${url}/Ads/${id}`)
+    axiosInstance
+        .delete(`${url}/${id}`)
         .then((res) => res.data)
         .catch((err) => {
             throw JSON.stringify(err.response?.data)

@@ -1,22 +1,23 @@
 import React from 'react';
-import {BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {HomePage} from "./pages/HomePage"
 import {NewPage} from "./pages/NewPage";
-import {FlatPage} from "./pages/FlatPage";
-import {flats} from "./flats";
+import {AdPage} from "./pages/AdPage";
 import {Header} from "./components/Header";
+import {CartPage} from "./pages/CartPage";
 
 function App() {
     return (
-        <Router>
+        <div>
             <Header/>
             <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/new" element={<NewPage/>}/>
-                <Route path="/flat/:id" element={<FlatPage flats={flats}/>}/>
+                <Route path="/ad/:id" element={<AdPage/>}/>
+                <Route path="/cart" element={<CartPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Routes>
-        </Router>
+        </div>
     );
 }
 

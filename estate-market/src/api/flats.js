@@ -1,9 +1,9 @@
-import {axios} from "axios"
+import {axiosInstance} from "./axios_instance";
 
-const url = "http://127.0.0.1:8000"
+const url = "http://127.0.0.1:8000";
 
 export const getFlats = () =>
-    axios
+    axiosInstance
         .get(`${url}/Flats/`)
         .then((res) => res.data)
         .catch((err) => {
@@ -11,7 +11,7 @@ export const getFlats = () =>
         });
 
 export const getFlatById = (id) =>
-    axios
+    axiosInstance
         .get(`${url}/Flats/${id}`)
         .then((res) => res.data)
         .catch((err) => {
@@ -19,7 +19,7 @@ export const getFlatById = (id) =>
         });
 
 export const addFlat = (flat) =>
-    axios
+    axiosInstance
         .post(`${url}/Flats/`, flat)
         .then((res) => res.data)
         .catch((err) => {
@@ -27,7 +27,7 @@ export const addFlat = (flat) =>
         });
 
 export const deleteFlatById = (id) =>
-    axios
+    axiosInstance
         .delete(`${url}/Flats/${id}`)
         .then((res) => res.data)
         .catch((err) => {
