@@ -26,7 +26,8 @@ class AdSerializer(serializers.ModelSerializer):
                   'CreationDate',
                   'SaleDate',
                   'SellerID',
-                  'FlatID']
+                  'FlatID',
+                  'Photo']
 
 
 class FlatSerializer(serializers.ModelSerializer):

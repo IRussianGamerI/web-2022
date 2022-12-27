@@ -44,6 +44,8 @@ class Ad(models.Model):
     SaleDate = models.DateTimeField(blank=True, null=True)
     SellerID = models.ForeignKey(Seller, models.DO_NOTHING, db_column='SellerID', blank=False, null=False)
     FlatID = models.ForeignKey(Flat, models.DO_NOTHING, db_column='FlatID', blank=False, null=False)
+    Photo = models.ImageField(blank=True, null=True)
+
 
 class Basket(models.Model):
     CustomerID = models.ForeignKey(Customer, models.DO_NOTHING, db_column='CustomerID', blank=False, null=False)
