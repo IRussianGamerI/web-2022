@@ -13,7 +13,7 @@ export const AdPage = () => {
     const handleClick = () => {
         const addCart = async () => {
             const values = {
-                Status: 'Ожидает связи с продавцом',
+                Status: 'Добавлено в корзину',
                 AdID: +id,
                 CustomerID: 1,
             };
