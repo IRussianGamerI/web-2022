@@ -1,4 +1,6 @@
-from estate_market.models import Customer, Seller, Ad, Flat, Type, Basket
+from rest_framework.fields import CharField
+
+from estate_market.models import Customer, Seller, Ad, Flat, Type, Basket, User
 from rest_framework import serializers
 
 
@@ -54,3 +56,15 @@ class ExpandedBasketSerializer(serializers.ModelSerializer):
         model = Basket
         fields = ['id', 'CustomerID', 'AdID', 'Status']
         depth = 2
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
+class LoginRequestSerializer(serializers.Serializer):
+    model = User
+    username = CharField(required=True)
+    password = CharField(required=True)

@@ -1,14 +1,47 @@
 from django.shortcuts import render
-from estate_market.models import Ad
-from estate_market.models import Flat
 from django.http import HttpResponse
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_jwt.utils import jwt_encode_handler
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from estate_market.serializers import *
+from estate_market.models import *
+
+
+@api_view(['GET', 'POST'])
+def get_json(request):
+    if request.method == 'POST':
+        user = User.objects.create_user(request.data['username'], request.data['email'], request.data['password'])
+        user.save()
+        refresh = RefreshToken.for_user(user)
+        return Response(
+            {'access': str(refresh.access_token), }
+        )
+    else:
+        return Response(
+            {'status': 'Wrong username or password'}
+        )
+
+
+@api_view()
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def user(request: Request):
+    return Response({
+        'data': UserSerializer(request.user).data
+    })
 
 
 class AdViewSet(viewsets.ModelViewSet):
     serializer_class = AdSerializer
+
     def get_queryset(self):
         queryset = Ad.objects.all()
         if self.request.method == "GET":
@@ -48,14 +81,26 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 class BasketViewSet(viewsets.ModelViewSet):
     queryset = Basket.objects.all()
     serializer_class = BasketSerializer
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 class ExpandedBasketViewSet(viewsets.ModelViewSet):
     queryset = Basket.objects.all()
     serializer_class = ExpandedBasketSerializer
+
+    def get_queryset(self):
+        queryset = Basket.objects.all().order_by('-id')
+        params = self.request.query_params.dict()
+        if len(params) > 0:
+            if params['id']:
+                queryset = Basket.objects.filter(CustomerID=params['id'])
+        return queryset
 
 
 def get_all_ads(request):
