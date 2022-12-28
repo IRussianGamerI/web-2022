@@ -49,6 +49,6 @@ class Ad(models.Model):
 
 
 class Basket(models.Model):
-    CustomerID = models.ForeignKey(Customer, models.DO_NOTHING, db_column='CustomerID', blank=False, null=False)
+    UserID = models.ForeignKey(User, models.DO_NOTHING, db_column='UserID', blank=False, null=False)
     AdID = models.ForeignKey(Ad, models.DO_NOTHING, db_column='AdID', blank=False, null=False)
     Status = models.TextField(blank=False, null=False)

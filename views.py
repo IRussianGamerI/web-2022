@@ -99,7 +99,7 @@ class ExpandedBasketViewSet(viewsets.ModelViewSet):
         params = self.request.query_params.dict()
         if len(params) > 0:
             if params['id']:
-                queryset = Basket.objects.filter(CustomerID=params['id'])
+                queryset = Basket.objects.filter(UserID=params['id'])
         return queryset
 
 

@@ -48,13 +48,13 @@ class TypeSerializer(serializers.ModelSerializer):
 class BasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Basket
-        fields = ['id', 'CustomerID', 'AdID', 'Status']
+        fields = ['id', 'UserID', 'AdID', 'Status']
 
 
 class ExpandedBasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Basket
-        fields = ['id', 'CustomerID', 'AdID', 'Status']
+        fields = ['id', 'UserID', 'AdID', 'Status']
         depth = 2
 
 

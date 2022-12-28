@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'estate_market.apps.EstateConfig',
     'rest_framework',
     'drf_yasg',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = { # Add to my work
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'lab2RIP.urls'
@@ -80,6 +82,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 WSGI_APPLICATION = 'lab2RIP.wsgi.application'
 
