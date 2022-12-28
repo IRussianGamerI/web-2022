@@ -1,23 +1,27 @@
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
-import {setAuth} from "../store/users/user_reducer";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {logout} from "../store/users/user_reducer";
 
 export const Header = () => {
-    const {authorized} = useSelector((store) => store.user);
+    const {authorized, user} = useSelector((store) => store.user);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const handleClick = () => {
-        dispatch(setAuth());
+        !authorized ? navigate('/auth') : dispatch(logout());
     }
-    return (<div className='flex justify-between m-4'>
+    return (<div className='flex justify-between w-full h-16 items-center border-b px-10'>
         <Link to='/' className='font-semibold text-2xl text-green-700'>
             Estate Market
         </Link>
-        <div>
+        <div className='flex gap-4'>
             {authorized && <Link to='/cart'>Корзина</Link>}
-            <button style={{marginLeft: '12px'}} onClick={handleClick}>
-                {authorized ? 'Выйти' : 'Войти'}
-            </button>
+            {authorized && user?.username && <p>{user.username}</p>}
+            {!location.pathname.includes('auth') && (
+                <button onClick={handleClick}>{authorized ? 'Выйти' : 'Войти'}</button>
+            )}
         </div>
     </div>);
     /*return (

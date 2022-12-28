@@ -11,7 +11,7 @@ export const Ad = (props) => {
             onClick={handleNavigate}
             className="p-8 rounded-xl bg-gray-300 min-w-[400px] max-w-[50vh] flex flex-col cursor-pointer my-8"
         >
-            <img src={props?.AdID + ".jpg"} alt={props?.Title}/>
+            <img src={props?.Photo} alt={props?.Title}/>
             <p>
                 <strong>Название:</strong> {props?.Title}
             </p>

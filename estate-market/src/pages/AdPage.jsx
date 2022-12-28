@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import { axiosInstance } from '../api/axios_instance';
 import { setAd } from '../store/ads/ad_reducer';
 
@@ -8,24 +8,25 @@ export const AdPage = () => {
     const dispatch = useDispatch();
     const { ad } = useSelector((store) => store.ad);
     const { id } = useParams();
-    const { authorized } = useSelector((store) => store.user);
+    const { authorized, user } = useSelector((store) => store.user);
+    const navigate = useNavigate();
 
     const handleClick = () => {
         const addCart = async () => {
             const values = {
                 Status: 'Добавлено в корзину',
                 AdID: +id,
-                CustomerID: 1,
+                UserID: user.id,
             };
-            const response = await axiosInstance.post('Basket/', values);
-            console.log(response);
+            console.log(values);
+            const response = await axiosInstance.post('/Basket/', values);
         };
         addCart();
     };
 
     useEffect(() => {
         const fetchAd = async () => {
-            await axiosInstance.get(`/Ads/${id}`).then((response) => dispatch(setAd(response?.data)));
+            await axiosInstance.get(`/Ads/${id}/`).then((response) => dispatch(setAd(response?.data)));
         };
         fetchAd();
     }, [dispatch, id]);
@@ -37,7 +38,7 @@ export const AdPage = () => {
             </div>
             {!!ad && (
                 <div className='p-8 rounded-xl bg-gray-300 min-w-[400px] max-w-[50vh] flex flex-col justify-center items-start cursor-pointer mt-8'>
-                    <img src={ad.AdID + ".jpg"} alt={ad.Title} />
+                    <img src={ad.Photo} alt={ad.Title} />
                     <p>
                         <strong>Название:</strong> {ad.Title}
                     </p>
