@@ -100,6 +100,8 @@ class ExpandedBasketViewSet(viewsets.ModelViewSet):
         if len(params) > 0:
             if params['id']:
                 queryset = Basket.objects.filter(UserID=params['id'])
+        else:
+            return []
         return queryset
 
 
