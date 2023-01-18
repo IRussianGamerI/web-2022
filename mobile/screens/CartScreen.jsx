@@ -13,7 +13,7 @@ export default function CartScreen() {
     useEffect(() => {
         async function getWholeCart() {
             await axiosInstance
-                .get('ExpandedBasket/')
+                .get('ExpandedApps/')
                 .then((response) => {
                     dispatch(setCart(response?.data))
                 });
@@ -24,11 +24,11 @@ export default function CartScreen() {
     const handleDelete = (id) => {
         const fetchDelete = async (id) => {
             await axiosInstance
-                .delete(`Basket/${id}/`)
+                .delete(`Applications/${id}/`)
                 .then(
                     async () =>
                         await axiosInstance
-                            .get('ExpandedBasket/')
+                            .get('ExpandedApps/')
                             .then((response) => {
                                 dispatch(setCart(response?.data))
                             })

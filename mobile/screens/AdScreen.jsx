@@ -30,7 +30,7 @@ export default function AdScreen({route}) {
                 AdID: +id,
                 CustomerID: 1,
             };
-            const response = await axiosInstance.post('Basket/', values);
+            const response = await axiosInstance.post('Applications/', values);
         };
         addCart();
     };
