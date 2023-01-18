@@ -37,7 +37,7 @@ export default function AdScreen({route}) {
 
     return (
         <View style={styles.card}>
-            <Image style={styles.image} source={{uri: ad.AdID + ".jpg"}}/>
+            <Image style={styles.image} source={{uri: ad.Photo}}/>
             <Text style={styles.text}>Название: {ad.Title}</Text>
             <Text style={styles.text}>Описание: {ad.Description}</Text>
             <Text style={styles.text}>Цена: {ad.Price} р.</Text>

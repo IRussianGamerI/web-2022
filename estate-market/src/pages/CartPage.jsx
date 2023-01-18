@@ -38,7 +38,7 @@ export const CartPage = () => {
                 <Link to='#'>Корзина</Link>
             </div>
             <ul>
-                {basket ? <p> Корзина пуста </p> : basket.map((note) => (
+                {basket.length === 0 ? <p> Корзина пуста </p> : basket.map((note) => (
                     <li key={note.id} className='p-4 m-4 bg-gray-300 w-[400px] rounded-xl'>
                         <img src={note?.AdID.Photo} alt={note?.AdID.Title} className='w-96'/>
                         <p>Статус: {note?.Status}</p>

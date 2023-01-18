@@ -71,6 +71,7 @@ export const AuthPage = () => {  // register or authentificate
                 <div className='flex flex-col'>
                     <label htmlFor='password'>Пароль</label>
                     <input
+                        type='password'
                         id='password'
                         className='border h-10 py-2 px-4 outline-none rounded-md'
                         value={password}
