@@ -1,6 +1,6 @@
 from rest_framework.fields import CharField
 
-from estate_market.models import Customer, Seller, Ad, Flat, Type, Basket, User
+from estate_market.models import Customer, Seller, Ad, Flat, Type, Application, User
 from rest_framework import serializers
 
 
@@ -16,7 +16,16 @@ class SellerSerializer(serializers.ModelSerializer):
         fields = ['SellerID', 'DateSignUp', 'FirstName', 'LastName', 'Telephone']
 
 
+class FlatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flat
+        fields = ['FlatID', 'Area', 'Address', 'Floor', 'TypeID', 'Balcony', 'YearBuilt',
+                  'BuildTech']
+
+
 class AdSerializer(serializers.ModelSerializer):
+    FlatID = FlatSerializer()
+
     class Meta:
         model = Ad
         fields = ['AdID',
@@ -32,29 +41,22 @@ class AdSerializer(serializers.ModelSerializer):
                   'Photo']
 
 
-class FlatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Flat
-        fields = ['FlatID', 'Area', 'Address', 'Floor', 'TypeID', 'Balcony', 'YearBuilt',
-                  'BuildTech']
-
-
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
         fields = ['TypeID', 'Name', 'NumBedrooms']
 
 
-class BasketSerializer(serializers.ModelSerializer):
+class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Basket
-        fields = ['id', 'UserID', 'AdID', 'Status']
+        model = Application
+        fields = ['id', 'UserID', 'AdID', 'Status', 'DateAdded', 'DateLastAction', 'DateFinished']
 
 
-class ExpandedBasketSerializer(serializers.ModelSerializer):
+class ExpandedAppSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Basket
-        fields = ['id', 'UserID', 'AdID', 'Status']
+        model = Application
+        fields = ['id', 'UserID', 'AdID', 'Status', 'DateAdded', 'DateLastAction', 'DateFinished']
         depth = 2
 
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class Seller(models.Model):
@@ -48,7 +49,10 @@ class Ad(models.Model):
     Photo = models.ImageField(blank=True, null=True)
 
 
-class Basket(models.Model):
+class Application(models.Model):
     UserID = models.ForeignKey(User, models.DO_NOTHING, db_column='UserID', blank=False, null=False)
     AdID = models.ForeignKey(Ad, models.DO_NOTHING, db_column='AdID', blank=False, null=False)
     Status = models.TextField(blank=False, null=False)
+    DateAdded = models.DateTimeField(blank=False, null=False, default=timezone.now)
+    DateLastAction = models.DateTimeField(blank=False, null=False, default=timezone.now)
+    DateFinished = models.DateTimeField(blank=True, null=True)

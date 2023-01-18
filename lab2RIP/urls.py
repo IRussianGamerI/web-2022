@@ -47,8 +47,8 @@ router.register(r'Sellers', views.SellerViewSet)
 router.register(r'Ads', views.AdViewSet, basename='Ad')
 router.register(r'Flats', views.FlatViewSet)
 router.register(r'Types', views.TypeViewSet)
-router.register(r"Basket", views.BasketViewSet)
-router.register(r"ExpandedBasket", views.ExpandedBasketViewSet)
+router.register(r"Applications", views.ApplicationViewSet)
+router.register(r"ExpandedApps", views.ExpandedAppViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

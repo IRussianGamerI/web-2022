@@ -83,23 +83,23 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
 @permission_classes([IsAuthenticated])
 @authentication_classes([JWTAuthentication])
-class BasketViewSet(viewsets.ModelViewSet):
-    queryset = Basket.objects.all()
-    serializer_class = BasketSerializer
+class ApplicationViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
 
 
 @permission_classes([IsAuthenticated])
 @authentication_classes([JWTAuthentication])
-class ExpandedBasketViewSet(viewsets.ModelViewSet):
-    queryset = Basket.objects.all()
-    serializer_class = ExpandedBasketSerializer
+class ExpandedAppViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ExpandedAppSerializer
 
     def get_queryset(self):
-        queryset = Basket.objects.all().order_by('-id')
+        queryset = Application.objects.all().order_by('-id')
         params = self.request.query_params.dict()
         if len(params) > 0:
             if params['id']:
-                queryset = Basket.objects.filter(UserID=params['id'])
+                queryset = Application.objects.filter(UserID=params['id'])
         else:
             return []
         return queryset
