@@ -4,7 +4,7 @@ import {setAuth} from "../store/users/user_reducer";
 import {useNavigate} from "react-router-dom";
 import {axiosInstance} from "../api/axios_instance";
 
-export const AuthPage = () => {  // register or authentificate
+export const AuthPage = () => {  // register or authenticate
     const {user} = useSelector((store) => store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();

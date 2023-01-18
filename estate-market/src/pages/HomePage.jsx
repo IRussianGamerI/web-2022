@@ -25,7 +25,6 @@ export const HomePage = () => {
     }, [dispatch, value]);
 
     return (<div>
-            <p>Добро пожаловать в Estate Market!</p>
             <div className='m-8'>
                 <div>
                     <p>Название</p>
@@ -60,7 +59,7 @@ export const HomePage = () => {
             </div>
 
             {ads &&
-                <div style={{display: "flex", flexDirection: "column"}}> {
+                <div className="m-8" style={{display: "flex", flexDirection: "column"}}> {
                     ads.map((ad) => (
                             <Ad key={ad.AdID} {...ad}/>
                         )

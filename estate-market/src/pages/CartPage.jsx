@@ -2,30 +2,31 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
 import axiosInstance from '../api/axios_instance';
-import {setBasket} from '../store/basket/basket_reducer';
+import {setApplication} from '../store/apps/app_reducer';
 
 export const CartPage = () => {
-    const {basket} = useSelector((store) => store.basket);
+    const {application} = useSelector((store) => store.app);
     const {authorized, user} = useSelector((store) => store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        const fetchBasket = async () => {
+        const fetchApps = async () => {
             const values = {id: user.id};
             await axiosInstance
-                .get('ExpandedBasket/', {params: values})
-                .then((response) => dispatch(setBasket(response?.data)));
+                .get('ExpandedApps/', {params: values})
+                .then((response) => dispatch(setApplication(response?.data)));
         };
-        authorized ? fetchBasket() : navigate('/');
+        authorized ? fetchApps() : navigate('/');
     }, [authorized, dispatch, navigate, user.id]);
 
     const handleDelete = (id) => {
         const fetchDelete = async (id) => {
             await axiosInstance
-                .delete(`Basket/${id}/`)
+                .delete(`Applications/${id}/`)
                 .then(
                     async () =>
-                        await axiosInstance.get('ExpandedBasket/').then((response) => dispatch(setBasket(response?.data)))
+                        await axiosInstance.get('ExpandedApps/').then((response) =>
+                            dispatch(setApplication(response?.data)))
                 );
         };
         fetchDelete(id);
@@ -34,16 +35,27 @@ export const CartPage = () => {
     return (
         <div className='m-8'>
             <div className='flex gap-1'>
-                <Link to='/'>Главная</Link> <p>/</p>
-                <Link to='#'>Корзина</Link>
+                <div className='flex gap-1 hover:bg-amber-300'>
+                    <Link to='/'>Главная</Link>
+                </div>
+                <p>/</p>
+                <div className='flex gap-1 hover:bg-amber-300'>
+                    <Link to='#'>Избранное и заявки</Link>
+                </div>
             </div>
             <ul>
-                {basket.length === 0 ? <p> Корзина пуста </p> : basket.map((note) => (
+                {application.length === 0 ? <p> Корзина пуста </p> : application.map((note) => (
                     <li key={note.id} className='p-4 m-4 bg-gray-300 w-[400px] rounded-xl'>
-                        <img src={note?.AdID.Photo} alt={note?.AdID.Title} className='w-96'/>
-                        <p>Статус: {note?.Status}</p>
-                        <p>Название: {note?.AdID.Title}</p>
-                        <p>Стоимость: {note?.AdID.Price}</p>
+                        <img src={note?.AdID?.Photo} alt={note?.AdID?.Title} className='w-96'/>
+                        <p>
+                            <strong>Статус:</strong> {note?.Status}
+                        </p>
+                        <p>
+                            <strong>Название: </strong> {note?.AdID?.Title}
+                        </p>
+                        <p>
+                            <strong>Стоимость: </strong> {note?.AdID?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'}
+                        </p>
                         <button
                             className='bg-blue-400 w-full rounded-xl mt-2 py-1 text-white'
                             onClick={() => handleDelete(note.id)}

@@ -17,17 +17,15 @@ export const Header = () => {
             Estate Market
         </Link>
         <div className='flex gap-4'>
-            {authorized && <Link to='/cart'>Корзина</Link>}
+            <div className='hover:bg-sky-200'>
+                {authorized && <Link to='/cart'>Избранное и заявки</Link>}
+            </div>
             {authorized && user?.username && <p>{user.username}</p>}
-            {!location.pathname.includes('auth') && (
-                <button onClick={handleClick}>{authorized ? 'Выйти' : 'Войти'}</button>
-            )}
+            <div className= {authorized ? 'hover:bg-red-300' : 'hover:bg-green-600'}>
+                {!location.pathname.includes('auth') && (
+                    <button onClick={handleClick}>{authorized ? 'Выйти' : 'Войти'}</button>
+                )}
+            </div>
         </div>
     </div>);
-    /*return (
-        <div style={{display: "flex", width: "100vw", justifyContent: "center", gap: "20px"}}>
-            <Link to="/">Домашняя</Link>
-            <Link to="new">Новая</Link>
-        </div>
-    )*/
 }
