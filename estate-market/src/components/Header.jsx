@@ -20,6 +20,9 @@ export const Header = () => {
             <div className='hover:bg-sky-200'>
                 {authorized && <Link to='/cart'>Избранное и заявки</Link>}
             </div>
+            <div className='hover:bg-yellow-200'>
+                {authorized && <Link to='/manager'>Панель менеджера</Link>}
+            </div>
             {authorized && user?.username && <p>{user.username}</p>}
             <div className= {authorized ? 'hover:bg-red-300' : 'hover:bg-green-600'}>
                 {!location.pathname.includes('auth') && (

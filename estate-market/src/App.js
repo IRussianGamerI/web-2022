@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {axiosInstance} from "./api/axios_instance";
 import {setUser} from "./store/users/user_reducer";
 import {AuthPage} from "./pages/AuthPage";
+import {ManagerPage} from "./pages/ManagerPage";
 
 function App() {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/" element={<HomePage/>}/>
                 {!authorized && <Route path='/auth' element={<AuthPage/>}/>}
                 {authorized && <Route path='/cart' element={<CartPage/>}/>}
+                {authorized && <Route path='/manager' element={<ManagerPage/>}/>}
                 <Route path="/new" element={<NewPage/>}/>
                 <Route path="/ad/:id" element={<AdPage/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>

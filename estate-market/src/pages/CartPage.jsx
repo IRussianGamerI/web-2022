@@ -2,19 +2,20 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
 import axiosInstance from '../api/axios_instance';
-import {setApplication} from '../store/apps/app_reducer';
+import {setApplications} from '../store/apps/user_app_reducer';
 
 export const CartPage = () => {
-    const {application} = useSelector((store) => store.app);
+    const {apps: applications} = useSelector((store) => store.userApps);
     const {authorized, user} = useSelector((store) => store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     useEffect(() => {
         const fetchApps = async () => {
             const values = {id: user.id};
             await axiosInstance
                 .get('ExpandedApps/', {params: values})
-                .then((response) => dispatch(setApplication(response?.data)));
+                .then((response) => dispatch(setApplications(response?.data)));
         };
         authorized ? fetchApps() : navigate('/');
     }, [authorized, dispatch, navigate, user.id]);
@@ -26,7 +27,7 @@ export const CartPage = () => {
                 .then(
                     async () =>
                         await axiosInstance.get('ExpandedApps/').then((response) =>
-                            dispatch(setApplication(response?.data)))
+                            dispatch(setApplications(response?.data)))
                 );
         };
         fetchDelete(id);
@@ -43,28 +44,31 @@ export const CartPage = () => {
                     <Link to='#'>Избранное и заявки</Link>
                 </div>
             </div>
-            <ul>
-                {application.length === 0 ? <p> Корзина пуста </p> : application.map((note) => (
-                    <li key={note.id} className='p-4 m-4 bg-gray-300 w-[400px] rounded-xl'>
-                        <img src={note?.AdID?.Photo} alt={note?.AdID?.Title} className='w-96'/>
-                        <p>
-                            <strong>Статус:</strong> {note?.Status}
-                        </p>
-                        <p>
-                            <strong>Название: </strong> {note?.AdID?.Title}
-                        </p>
-                        <p>
-                            <strong>Стоимость: </strong> {note?.AdID?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'}
-                        </p>
-                        <button
-                            className='bg-blue-400 w-full rounded-xl mt-2 py-1 text-white'
-                            onClick={() => handleDelete(note.id)}
-                        >
-                            Удалить
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            {applications &&
+                <ul>
+                    {applications?.length === 0 ? <p> Корзина пуста </p> : null}
+                    {applications?.map((note) => (
+                        <li key={note.id} className='p-4 m-4 bg-gray-300 w-[400px] rounded-xl'>
+                            <img src={note?.AdID?.Photo} alt={note?.AdID?.Title} className='w-96'/>
+                            <p>
+                                <strong>Статус:</strong> {note?.StatusID.Name}
+                            </p>
+                            <p>
+                                <strong>Название: </strong> {note?.AdID?.Title}
+                            </p>
+                            <p>
+                                <strong>Стоимость: </strong> {note?.AdID?.Price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'}
+                            </p>
+                            <button
+                                className='bg-blue-400 w-full rounded-xl mt-2 py-1 text-white'
+                                onClick={() => handleDelete(note.id)}
+                            >
+                                Удалить
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            }
         </div>
     );
 };

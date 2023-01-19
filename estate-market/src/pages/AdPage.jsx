@@ -14,11 +14,10 @@ export const AdPage = () => {
     const handleClick = () => {
         const addCart = async () => {
             const values = {
-                Status: 'Добавлено в корзину',
+                StatusID: 1,
                 AdID: +id,
                 UserID: user.id,
             };
-            console.log(values);
             const response = await axiosInstance.post('Applications/', values);
         };
         addCart();

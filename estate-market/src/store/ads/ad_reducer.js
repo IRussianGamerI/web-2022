@@ -11,7 +11,6 @@ const adSlice = createSlice({
     reducers: {
         setAds: (state, {payload}) => {
             console.log('setAds');
-            console.log(payload);
             state.ads = payload.ads;
         },
         setAd: (state, {payload}) => {

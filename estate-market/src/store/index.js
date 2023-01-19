@@ -2,7 +2,8 @@ import {useDispatch, useSelector} from "react-redux"
 import {configureStore} from "@reduxjs/toolkit";
 import {adReducer} from "./ads/ad_reducer";
 import {userReducer} from "./users/user_reducer";
-import {appReducer} from "./apps/app_reducer";
+import {userAppReducer} from "./apps/user_app_reducer";
+import {managerAppReducer} from "./apps/manager_app_reducer";
 
 
 export const makeStore = () =>
@@ -10,7 +11,8 @@ export const makeStore = () =>
         reducer: {
             ad: adReducer,
             user: userReducer,
-            app: appReducer
+            userApps: userAppReducer,
+            managerApps: managerAppReducer
         }
     });
 
