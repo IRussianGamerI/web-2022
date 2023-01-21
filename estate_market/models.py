@@ -49,10 +49,15 @@ class Ad(models.Model):
     Photo = models.ImageField(blank=True, null=True)
 
 
+class Status(models.Model):
+    StatusID = models.AutoField(primary_key=True)
+    Name = models.CharField(max_length=60, blank=False, null=False)
+
+
 class Application(models.Model):
     UserID = models.ForeignKey(User, models.DO_NOTHING, db_column='UserID', blank=False, null=False)
     AdID = models.ForeignKey(Ad, models.DO_NOTHING, db_column='AdID', blank=False, null=False)
-    Status = models.TextField(blank=False, null=False)
+    StatusID = models.ForeignKey(Status, models.DO_NOTHING, db_column='StatusID', blank=False, null=False, default=1)
     DateAdded = models.DateTimeField(blank=False, null=False, default=timezone.now)
     DateLastAction = models.DateTimeField(blank=False, null=False, default=timezone.now)
     DateFinished = models.DateTimeField(blank=True, null=True)

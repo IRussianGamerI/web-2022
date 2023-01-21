@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -87,21 +89,77 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
 
+    def get_queryset(self):
+        queryset = Application.objects.all().order_by('-DateAdded')
+        user_id = self.request.query_params.get('UserID')
+        status = self.request.query_params.get('Status')
+        if user_id:
+            queryset = queryset.filter(UserID=user_id)
+        if status:
+            queryset = queryset.filter(Status=status)
+        return queryset
+
+
 
 @permission_classes([IsAuthenticated])
 @authentication_classes([JWTAuthentication])
 class ExpandedAppViewSet(viewsets.ModelViewSet):
-    queryset = Application.objects.all()
+    queryset = Application.objects.all().order_by('-id')
     serializer_class = ExpandedAppSerializer
 
     def get_queryset(self):
-        queryset = Application.objects.all().order_by('-id')
         params = self.request.query_params.dict()
         if len(params) > 0:
-            if params['id']:
-                queryset = Application.objects.filter(UserID=params['id'])
+            queryset = Application.objects.filter(UserID=params['id'])
         else:
             return []
+        return queryset
+
+
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+class ManagerAppViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ExpandedAppSerializer
+    def get_queryset(self):
+        params = self.request.query_params.dict()
+        if len(params) > 0 and 'StatusID' in params.keys():
+            if params['StatusID'] == '0':
+                queryset = Application.objects.all()
+            else:
+                queryset = Application.objects.filter(StatusID=params['StatusID'])
+        else:
+            return []
+
+        if 'min_da' in params.keys():
+            queryset = queryset.filter(DateAdded__gte=datetime.strptime(params['min_da'], '%Y-%m-%d'))
+        if 'max_da' in params.keys():
+            queryset = queryset.filter(DateAdded__lte=datetime.strptime(params['max_da'], '%Y-%m-%d'))
+        if 'min_la' in params.keys():
+            queryset = queryset.filter(DateLastAction__gte=datetime.strptime(params['min_la'], '%Y-%m-%d'))
+        if 'max_la' in params.keys():
+            queryset = queryset.filter(DateLastAction__lte=datetime.strptime(params['max_la'], '%Y-%m-%d'))
+        return queryset
+
+
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+class StatusViewSet(viewsets.ModelViewSet):
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
+
+    def get_queryset(self):
+        queryset = Status.objects.all()
+        params = self.request.query_params.dict()
+        if len(params) > 0:
+            print(params)
+            if 'id' in params.keys():
+                if params['id'] == '1' or params['id'] == '3':
+                    queryset = Status.objects.filter(StatusID='4')
+                elif params['id'] == '2':
+                    queryset = Status.objects.filter(StatusID='3') | Status.objects.filter(StatusID='4')
+                else:
+                    return []
         return queryset
 
 

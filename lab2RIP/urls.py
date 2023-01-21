@@ -49,6 +49,8 @@ router.register(r'Flats', views.FlatViewSet)
 router.register(r'Types', views.TypeViewSet)
 router.register(r"Applications", views.ApplicationViewSet)
 router.register(r"ExpandedApps", views.ExpandedAppViewSet)
+router.register(r"ManagerApps", views.ManagerAppViewSet)
+router.register(r"Statuses", views.StatusViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

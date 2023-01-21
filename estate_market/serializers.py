@@ -1,6 +1,6 @@
 from rest_framework.fields import CharField
 
-from estate_market.models import Customer, Seller, Ad, Flat, Type, Application, User
+from estate_market.models import Customer, Seller, Ad, Flat, Type, User, Application, Status
 from rest_framework import serializers
 
 
@@ -50,14 +50,20 @@ class TypeSerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ['id', 'UserID', 'AdID', 'Status', 'DateAdded', 'DateLastAction', 'DateFinished']
+        fields = ['id', 'UserID', 'AdID', 'StatusID', 'DateAdded', 'DateLastAction', 'DateFinished']
 
 
 class ExpandedAppSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ['id', 'UserID', 'AdID', 'Status', 'DateAdded', 'DateLastAction', 'DateFinished']
+        fields = "__all__"
         depth = 2
+
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = ['StatusID', 'Name']
 
 
 class UserSerializer(serializers.ModelSerializer):
