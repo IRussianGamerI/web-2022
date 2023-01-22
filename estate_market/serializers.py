@@ -1,13 +1,7 @@
 from rest_framework.fields import CharField
 
-from estate_market.models import Customer, Seller, Ad, Flat, Type, User, Application, Status
+from estate_market.models import Seller, Ad, User, Application, Status
 from rest_framework import serializers
-
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ['CustomerID', 'DateSignUp', 'FirstName', 'LastName']
 
 
 class SellerSerializer(serializers.ModelSerializer):
@@ -16,48 +10,25 @@ class SellerSerializer(serializers.ModelSerializer):
         fields = ['SellerID', 'DateSignUp', 'FirstName', 'LastName', 'Telephone']
 
 
-class FlatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Flat
-        fields = ['FlatID', 'Area', 'Address', 'Floor', 'TypeID', 'Balcony', 'YearBuilt',
-                  'BuildTech']
-
-
 class AdSerializer(serializers.ModelSerializer):
-    FlatID = FlatSerializer()
 
     class Meta:
         model = Ad
-        fields = ['AdID',
-                  'Price',
-                  'CustomerID',
-                  'Title',
-                  'Description',
-                  'Status',
-                  'CreationDate',
-                  'SaleDate',
-                  'SellerID',
-                  'FlatID',
-                  'Photo']
-
-
-class TypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Type
-        fields = ['TypeID', 'Name', 'NumBedrooms']
+        fields = "__all__"
 
 
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ['id', 'UserID', 'AdID', 'StatusID', 'DateAdded', 'DateLastAction', 'DateFinished']
+        fields = "__all__"
 
 
+# contains all info about the application (seller, ad, status)
 class ExpandedAppSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = "__all__"
-        depth = 2
+        depth = 2  # depth = 2 not 1 because of the seller being in the ad
 
 
 class StatusSerializer(serializers.ModelSerializer):

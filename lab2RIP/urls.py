@@ -42,27 +42,24 @@ schema_view = get_schema_view(
 )
 
 router = routers.DefaultRouter()
-router.register(r'Customers', views.CustomerViewSet)
 router.register(r'Sellers', views.SellerViewSet)
 router.register(r'Ads', views.AdViewSet, basename='Ad')
-router.register(r'Flats', views.FlatViewSet)
-router.register(r'Types', views.TypeViewSet)
 router.register(r"Applications", views.ApplicationViewSet)
 router.register(r"ExpandedApps", views.ExpandedAppViewSet)
 router.register(r"ManagerApps", views.ManagerAppViewSet)
 router.register(r"Statuses", views.StatusViewSet)
 
 urlpatterns = [
+    # first labs
     path('admin/', admin.site.urls),
-    path('', views.get_all_ads),
-    path('ad/<id>/', views.get_ad_with_flat, name='ad_url'),
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
+    # authentification
     path('add_user', views.get_json, name='get_json'),
     path('api/user', views.user, name='user'),
     path('api/token/obtain', TokenObtainPairView.as_view(), name='token_obtain'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # for media files (images)
