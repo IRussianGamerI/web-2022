@@ -10,6 +10,9 @@ import {axiosInstance} from "./api/axios_instance";
 import {setUser} from "./store/users/user_reducer";
 import {AuthPage} from "./pages/AuthPage";
 import {ManagerPage} from "./pages/ManagerPage";
+import {ManagerApplication} from "./components/ManagerApplication";
+import {ManagerEditAd} from "./pages/ManagerEditAd";
+import {ManagerCreateAd} from "./pages/ManagerCreateAd";
 
 function App() {
     const dispatch = useDispatch();
@@ -31,9 +34,11 @@ function App() {
                 <Route path="/" element={<HomePage/>}/>
                 {!authorized && <Route path='/auth' element={<AuthPage/>}/>}
                 {authorized && <Route path='/cart' element={<CartPage/>}/>}
-                {authorized && <Route path='/manager' element={<ManagerPage/>}/>}
+                {authorized && user?.is_staff ? <Route path='/manager' element={<ManagerPage/>}/> : null}
+                {authorized && user?.is_staff ? <Route path='/add_ad' element={<ManagerCreateAd/>}/> : null}
                 <Route path="/new" element={<NewPage/>}/>
                 <Route path="/ad/:id" element={<AdPage/>}/>
+                {authorized && user?.is_staff ? <Route path="/manager_ad/:id" element={<ManagerEditAd/>}/> : null}
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Routes>
         </div>

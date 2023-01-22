@@ -8,14 +8,6 @@ export const ManagerApplication = (props) => {
     const dispatch = useDispatch();
     const [value, setValue] = useState([]);
 
-    // async function getStatuses() {
-    //     return await axiosInstance.get('Statuses/').then((response) => {
-    //         return response?.data;
-    //     }).then(values => values?.map((status) => {
-    //         return <option value={status?.StatusID}>{status?.Name}</option>;
-    //     }));
-    // }
-
     useEffect(() => {
         const newValues = axiosInstance.get('Statuses/', {params: {id: props?.StatusID?.StatusID}})
             .then((response) => response?.data)
@@ -31,9 +23,18 @@ export const ManagerApplication = (props) => {
 
     const handleUpdate = async (status) => {
         const values = {StatusID: status, DateLastAction: dayjs().format('YYYY-MM-DD HH:mm:ss')};
-        await axiosInstance.patch(`Applications/${props.id}/`, values).then(async () => {
-            await axiosInstance.get('ManagerApps/').then((response) => dispatch(setApplications(response?.data)));
-        });
+        if (status === 6) {
+            values['DateFinished'] = dayjs().format('YYYY-MM-DD HH:mm:ss');
+        }
+        await axiosInstance.patch(`Applications/${props.id}/`, values)
+            .then(async () => {
+                if (status === 6) {
+                    await axiosInstance.patch(`Ads/${props?.AdID?.AdID}/`, {Active: false});
+                }
+            })
+            .then(async () => {
+                await axiosInstance.get('ManagerApps/').then((response) => dispatch(setApplications(response?.data)));
+            });
     };
 
     return (
@@ -49,13 +50,21 @@ export const ManagerApplication = (props) => {
                     <p>Дата завершения: {dayjs(props?.DateFinished).format('YYYY.MM.DD HH:mm')}</p> : null}
                 <br></br>
                 <p>Текущий статус: {props?.StatusID?.Name}</p>
-                <p>Изменить статус:</p>
-                <select
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    onChange={(e) => handleUpdate(e.target.value)}>
-                    <option selected={true} disabled>Статус заявки</option>
-                    {renderedOptions}
-                </select>
+                {props?.StatusID?.StatusID !== 5 ?
+                    <div>
+                        <p>Изменить статус:</p>
+                        <select
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            onChange={(e) => handleUpdate(e.target.value)}>
+                            <option selected={true} disabled>Статус заявки</option>
+                            {renderedOptions}
+                        </select>
+                    </div>
+                    :
+                    <button
+                        className="my-2 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                        onClick={() => handleUpdate(6)}
+                    >Завершить и снять объявление с публикации</button>}
             </div>
         </div>
     );

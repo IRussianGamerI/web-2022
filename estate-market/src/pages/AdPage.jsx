@@ -18,7 +18,8 @@ export const AdPage = () => {
                 AdID: +id,
                 UserID: user.id,
             };
-            const response = await axiosInstance.post('Applications/', values);
+            const response = await axiosInstance.post('Applications/', values)
+                .then((response) => console.log(response));
         };
         addCart();
     };
@@ -33,43 +34,43 @@ export const AdPage = () => {
         <div className='m-8'>
             <div className='flex gap-1'>
                 <Link to='/'>{'Главная'}</Link> <p>/</p>
-                <Link to='#'>{ad.Title}</Link>
+                <Link to='#'>{ad?.Title}</Link>
             </div>
-            {!!ad && (
+            {!!ad &&
                 <div
                     className='p-8 rounded-xl bg-gray-300 min-w-[400px] max-w-[50vh] flex flex-col justify-center items-start cursor-pointer mt-8'>
-                    <img src={ad.Photo} alt={ad.Title}/>
+                    <img src={ad.Photo} alt={ad?.Title}/>
                     <p>
-                        <strong>Название:</strong> {ad.Title}
+                        <strong>Название:</strong> {ad?.Title}
                     </p>
                     <p>
-                        <strong>Описание:</strong> {ad.Description}
+                        <strong>Описание:</strong> {ad?.Description}
                     </p>
                     <p>
-                        <strong>Адрес:</strong> {ad.FlatID?.Address}
+                        <strong>Адрес:</strong> {ad?.Address}
                     </p>
                     <p>
-                        <strong>Площадь:</strong> {ad.FlatID?.Area + ' кв.м'}
+                        <strong>Площадь:</strong> {ad?.Area + ' кв.м'}
                     </p>
                     <p>
-                        <strong>Этаж:</strong> {ad.FlatID?.Floor}
+                        <strong>Количество комнат:</strong> {ad?.RoomNum}
                     </p>
                     <p>
-                        <strong>Балкон:</strong> {ad.FlatID?.Balcony ? 'Есть' : 'Нет'}
+                        <strong>Этаж:</strong> {ad?.Floor}
                     </p>
                     <p>
-                        <strong>Материал дома:</strong> {ad.FlatID?.BuildTech}
+                        <strong>Балкон:</strong> {ad?.Balcony ? 'Есть' : 'Нет'}
                     </p>
                     <p>
                         <strong>Стоимость:</strong> {ad.Price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'}
                     </p>
-                    {authorized && (
+                    {authorized && !user?.is_staff && (
                         <button className='bg-blue-400 w-full rounded-xl mt-2 py-1 text-white' onClick={handleClick}>
                             Добавить в избранное
                         </button>
                     )}
                 </div>
-            )}
+            }
         </div>
     );
 };

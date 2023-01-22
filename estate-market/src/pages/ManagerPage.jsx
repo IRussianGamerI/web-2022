@@ -24,10 +24,10 @@ export const ManagerPage = () => {
 
     useEffect(() => {
         const fetchApps = async () => {
-            await axiosInstance.get('ManagerApps/', {params: query}).then((response) => dispatch(setApplications(response?.data)));
+            await axiosInstance.get('ManagerApps/', {params: {query, StatusID: status}}).then((response) => dispatch(setApplications(response?.data)));
         };
         fetchApps();
-    }, [dispatch, query]);
+    }, [dispatch, query, status]);
 
     useEffect(() => {
         const newValues = axiosInstance.get('Statuses/')
@@ -95,7 +95,6 @@ export const ManagerPage = () => {
                     />
                 </div>
                 <button onClick={() => setQuery({
-                    StatusID: status,
                     min_da: minDateAdded,
                     max_da: maxDateAdded,
                     min_la: minLastAction,
@@ -104,7 +103,7 @@ export const ManagerPage = () => {
                 </button>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4">
                 {apps?.map((app) => <ManagerApplication key={app?.id} {...app}/>)}
             </div>
         </div>

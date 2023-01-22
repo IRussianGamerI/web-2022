@@ -18,10 +18,10 @@ export const Header = () => {
         </Link>
         <div className='flex gap-4'>
             <div className='hover:bg-sky-200'>
-                {authorized && <Link to='/cart'>Избранное и заявки</Link>}
+                {authorized && !user?.is_staff && <Link to='/cart'>Избранное и заявки</Link>}
             </div>
             <div className='hover:bg-yellow-200'>
-                {authorized && <Link to='/manager'>Панель менеджера</Link>}
+                {authorized && user?.is_staff && <Link to='/manager'>Панель заявок</Link>}
             </div>
             {authorized && user?.username && <p>{user.username}</p>}
             <div className= {authorized ? 'hover:bg-red-300' : 'hover:bg-green-600'}>

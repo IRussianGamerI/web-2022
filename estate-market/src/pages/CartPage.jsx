@@ -23,15 +23,54 @@ export const CartPage = () => {
     const handleDelete = (id) => {
         const fetchDelete = async (id) => {
             await axiosInstance
-                .delete(`Applications/${id}/`)
+                .patch(`Applications/${id}/`, {StatusID: 4})
                 .then(
                     async () =>
-                        await axiosInstance.get('ExpandedApps/').then((response) =>
+                        await axiosInstance.get('ExpandedApps/', {params: {id: user.id}}).then((response) =>
                             dispatch(setApplications(response?.data)))
                 );
         };
         fetchDelete(id);
     };
+
+    const handleContact = (id) => {
+        const fetchContact = async (id) => {
+            await axiosInstance
+                .patch(`Applications/${id}/`, {StatusID: 2})
+                .then(
+                    async () =>
+                        await axiosInstance.get('ExpandedApps/', {params: {id: user.id}}).then((response) =>
+                            dispatch(setApplications(response?.data)))
+                );
+        };
+        fetchContact(id);
+    }
+
+    const handleFinish = (id) => {
+        const fetchFinish = async (id) => {
+            await axiosInstance
+                .patch(`Applications/${id}/`, {StatusID: 5})
+                .then(
+                    async () =>
+                        await axiosInstance.get('ExpandedApps/', {params: {id: user.id}}).then((response) =>
+                            dispatch(setApplications(response?.data)))
+                );
+        };
+        fetchFinish(id);
+    }
+
+    const handleCancelFinish = (id) => {
+        const fetchCancelFinish = async (id) => {
+            await axiosInstance
+                .patch(`Applications/${id}/`, {StatusID: 3})
+                .then(
+                    async () =>
+                        await axiosInstance.get('ExpandedApps/', {params: {id: user.id}}).then((response) =>
+                            dispatch(setApplications(response?.data)))
+                );
+        };
+        fetchCancelFinish(id);
+    }
 
     return (
         <div className='m-8'>
@@ -45,13 +84,14 @@ export const CartPage = () => {
                 </div>
             </div>
             {applications &&
-                <ul>
+                <ul className="flex flex-row">
                     {applications?.length === 0 ? <p> Корзина пуста </p> : null}
                     {applications?.map((note) => (
                         <li key={note.id} className='p-4 m-4 bg-gray-300 w-[400px] rounded-xl'>
                             <img src={note?.AdID?.Photo} alt={note?.AdID?.Title} className='w-96'/>
-                            <p>
-                                <strong>Статус:</strong> {note?.StatusID.Name}
+                            <p className="flex flex-row">
+                                <strong className="mr-2">Статус:</strong>
+                                <p className="font-bold text-blue-700"> {note?.StatusID.Name} </p>
                             </p>
                             <p>
                                 <strong>Название: </strong> {note?.AdID?.Title}
@@ -59,12 +99,60 @@ export const CartPage = () => {
                             <p>
                                 <strong>Стоимость: </strong> {note?.AdID?.Price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'}
                             </p>
-                            <button
-                                className='bg-blue-400 w-full rounded-xl mt-2 py-1 text-white'
+                            <p>
+                                <strong>Адрес: </strong> {note?.AdID?.Address}
+                            </p>
+                            <p>
+                                <strong>Площадь: </strong> {note?.AdID?.Area} м<sup>2</sup>
+                            </p>
+                            <p>
+                                <strong>Число комнат: </strong> {note?.AdID?.RoomNum}
+                            </p>
+                            <p>
+                                <strong>Этаж: </strong> {note?.AdID?.Floor}
+                            </p>
+                            <p>
+                                <strong>Балкон: </strong> {note?.AdID?.Balcony ? 'Есть' : 'Нет'}
+                            </p>
+                            {note?.StatusID?.StatusID === 3 || note?.StatusID?.StatusID === 5 ?
+                                <div>
+                                    <p className="flex flex-col items-center mr-8">
+                                        <strong>Данные продавца</strong>
+                                    </p>
+                                    <p>
+                                        <strong>Телефон продавца:</strong> {note?.AdID?.SellerID?.Telephone}
+                                    </p>
+                                    <p>
+                                        <strong>Имя продавца: </strong>
+                                        {note?.AdID?.SellerID?.FirstName} {note?.AdID?.SellerID?.LastName}
+                                    </p>
+                                </div>
+                                : null
+                            }
+                            {note?.StatusID?.StatusID === 1 && <button
+                                className='bg-red-400 hover:bg-red-700 w-full rounded-xl text-white font-bold py-1 mt-2'
+                                onClick={() => handleContact(note.id)}
+                            >
+                                Запросить контакты продавца
+                            </button>}
+                            {note?.StatusID?.StatusID < 4 && <button
+                                className='bg-blue-400 hover:bg-blue-700 w-full rounded-xl mt-2 py-1 text-white'
                                 onClick={() => handleDelete(note.id)}
                             >
                                 Удалить
-                            </button>
+                            </button>}
+                            {note?.StatusID?.StatusID === 3 && <button
+                                className='bg-red-400 hover:bg-red-700 w-full rounded-xl mt-2 py-1 text-white'
+                                onClick={() => handleFinish(note.id)}
+                            >
+                                Запросить завершение заявки
+                            </button>}
+                            {note?.StatusID?.StatusID === 5 && <button
+                                className='bg-green-400 hover:bg-green-700 w-full rounded-xl mt-2 py-1 text-white'
+                                onClick={() => handleCancelFinish(note.id)}
+                            >
+                                Отказаться от завершения
+                            </button>}
                         </li>
                     ))}
                 </ul>
